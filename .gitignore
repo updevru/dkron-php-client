@@ -1,0 +1,11 @@
+# Composer files.
+/vendor
+composer.lock
+
+# Different environment-related files.
+/.idea
+.DS_Store
+
+# Tests
+.phpunit.result.cache
+/.phpunit.cache

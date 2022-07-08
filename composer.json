@@ -1,0 +1,31 @@
+{
+    "name": "updevru/dkron-php-client",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Updevru\\Dkron\\": "src/",
+            "Updevru\\Dkron\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ladygin Sergey"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.3.0",
+        "ext-json": "*",
+        "psr/http-client-implementation": "^1.0",
+        "jms/serializer": "^3.17"
+    },
+    "require-dev": {
+        "nyholm/psr7": "^1.5",
+        "php-http/curl-client": "^2.2",
+        "phpunit/phpunit": "^9.5",
+        "php-http/mock-client": "^1.5"
+    },
+    "suggest": {
+    }
+}
