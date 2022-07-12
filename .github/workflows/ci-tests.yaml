@@ -16,10 +16,10 @@ jobs:
         version: [ "7.4", "8.0", "8.1" ]
     steps:
         - uses: actions/checkout@v2
-        - uses: php-actions/composer@v6
-        - name: Run PHPUnit Tests
-          uses: php-actions/phpunit@v3
+        - uses: shivammathur/setup-php@v2
           with:
-            bootstrap: vendor/autoload.php
-            configuration: phpunit.xml
-            php_version: ${{ matrix.version }}
+            php-version: "${{ matrix.version }}"
+        - name: Composer install
+          run: "composer install"
+        - name: Run PHPUnit Tests
+          run: "php vendor/bin/phpunit"
