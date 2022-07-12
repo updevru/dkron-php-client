@@ -15,7 +15,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.3.0",
+        "php": ">=7.4.0",
         "ext-json": "*",
         "psr/http-client-implementation": "^1.0",
         "jms/serializer": "^3.17"
@@ -26,6 +26,12 @@
         "phpunit/phpunit": "^9.5",
         "php-http/mock-client": "^1.5"
     },
-    "suggest": {
+    "scripts": {
+        "tests": [
+            "@php vendor/bin/phpunit"
+        ],
+        "code-fix": [
+            "@php php-cs-fixer-v3.phar fix"
+        ]
     }
 }

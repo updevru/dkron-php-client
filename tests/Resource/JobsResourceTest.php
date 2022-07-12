@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Updevru\Dkron\Tests\Resource;
 
 use Http\Mock\Client;
@@ -13,7 +15,7 @@ class JobsResourceTest extends TestCase
 {
     use HelpTrait;
 
-    private function createApi(Client $client) : JobsResource
+    private function createApi(Client $client): JobsResource
     {
         return new JobsResource(
             $this->createApiClient($client),
@@ -22,9 +24,9 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers JobsResource::getJobs
+     * @covers \JobsResource::getJobs
      */
-    public function testGetJobsSuccess() : void
+    public function testGetJobsSuccess(): void
     {
         $body = '[
   {
@@ -108,7 +110,7 @@ class JobsResourceTest extends TestCase
         $this->assertNull($dto->getMetadata());
         $this->assertEquals(0, $dto->getRetries());
         $this->assertNull($dto->getDependentJobs());
-        $this->assertEquals("", $dto->getParentJob());
+        $this->assertEquals('', $dto->getParentJob());
         $this->assertEquals([], $dto->getProcessors());
         $this->assertEquals(JobDto::CONCURRENCY_ALLOW, $dto->getConcurrency());
         $this->assertEquals('shell', $dto->getExecutor());
@@ -130,11 +132,11 @@ class JobsResourceTest extends TestCase
         $this->assertEquals('2022-07-07T20:27:39', $dto->getLastSuccess()->format('Y-m-d\TH:i:s'));
         $this->assertEquals(0, $dto->getErrorCount());
         $this->assertFalse($dto->isDisabled());
-        $this->assertEquals(["tag" => "test"], $dto->getTags());
-        $this->assertEquals(["dc" => "cloud"], $dto->getMetadata());
+        $this->assertEquals(['tag' => 'test'], $dto->getTags());
+        $this->assertEquals(['dc' => 'cloud'], $dto->getMetadata());
         $this->assertEquals(0, $dto->getRetries());
         $this->assertNull($dto->getDependentJobs());
-        $this->assertEquals("", $dto->getParentJob());
+        $this->assertEquals('', $dto->getParentJob());
         $this->assertEquals([], $dto->getProcessors());
         $this->assertEquals(JobDto::CONCURRENCY_ALLOW, $dto->getConcurrency());
         $this->assertEquals('shell', $dto->getExecutor());
@@ -145,7 +147,7 @@ class JobsResourceTest extends TestCase
         $this->assertNull($dto->getExpiresAt());
     }
 
-    private function createSingleJobResponse() : string
+    private function createSingleJobResponse(): string
     {
         return '
 {
@@ -181,11 +183,10 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers JobsResource::getJobByName
+     * @covers \JobsResource::getJobByName
      */
-    public function testGetJobByNameSuccess()
+    public function testGetJobByNameSuccess(): void
     {
-
         $client = $this->createHttpClient(200, $this->createSingleJobResponse());
         $result = $this->createApi($client)->getJobByName('test_job');
 
@@ -194,9 +195,9 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers JobsResource::runJob
+     * @covers \JobsResource::runJob
      */
-    public function testRunJobSuccess()
+    public function testRunJobSuccess(): void
     {
         $client = $this->createHttpClient(200, $this->createSingleJobResponse());
         $result = $this->createApi($client)->runJob('test_job');
@@ -206,9 +207,9 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers JobsResource::deleteJob
+     * @covers \JobsResource::deleteJob
      */
-    public function testDeleteJobSuccess()
+    public function testDeleteJobSuccess(): void
     {
         $client = $this->createHttpClient(200, $this->createSingleJobResponse());
         $result = $this->createApi($client)->deleteJob('test_job');
@@ -218,9 +219,9 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers JobsResource::toggleJob
+     * @covers \JobsResource::toggleJob
      */
-    public function testToggleJobSuccess()
+    public function testToggleJobSuccess(): void
     {
         $client = $this->createHttpClient(200, $this->createSingleJobResponse());
         $result = $this->createApi($client)->toggleJob('test_job');

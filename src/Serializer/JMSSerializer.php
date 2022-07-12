@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Updevru\Dkron\Serializer;
 
@@ -8,15 +9,12 @@ use JMS\Serializer\SerializerBuilder;
 
 class JMSSerializer implements SerializerInterface
 {
-    /**
-     * @var \JMS\Serializer\Serializer
-     */
-    private $serializer;
+    private \JMS\Serializer\Serializer $serializer;
 
     public function __construct()
     {
         $this->serializer = SerializerBuilder::create()
-            ->configureHandlers(function (HandlerRegistry $registry) {
+            ->configureHandlers(function (HandlerRegistry $registry): void {
                 $registry->registerSubscribingHandler(new JMSCustomHandler());
             })
             ->build()

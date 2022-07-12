@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Updevru\Dkron\Resource;
 
 use Updevru\Dkron\Dto\ExecutionDto;
@@ -8,9 +10,10 @@ class ExecutionsResource extends AbstractResource
 {
     /**
      * Returns the running executions.
+     *
      * @return ExecutionDto[]
      */
-    public function getExecutions() : array
+    public function getExecutions(): array
     {
         return $this->serializer->deserialize(
             $this->client->get('/busy'),
@@ -21,10 +24,10 @@ class ExecutionsResource extends AbstractResource
 
     /**
      * List executions.
-     * @param string $jobName
+     *
      * @return ExecutionDto[]
      */
-    public function getExecutionsByJob(string $jobName) : array
+    public function getExecutionsByJob(string $jobName): array
     {
         return $this->serializer->deserialize(
             $this->client->get(sprintf('/jobs/%s/executions', $jobName)),
@@ -35,12 +38,8 @@ class ExecutionsResource extends AbstractResource
 
     /**
      * Get execution.
-     * @param string $jobName
-     * @param string $executionId
-     *
-     * @return ExecutionDto
      */
-    public function getExecutionById(string $jobName, string $executionId) : ExecutionDto
+    public function getExecutionById(string $jobName, string $executionId): ExecutionDto
     {
         return $this->serializer->deserialize(
             $this->client->get(sprintf('/jobs/%s/executions/%s', $jobName, $executionId)),

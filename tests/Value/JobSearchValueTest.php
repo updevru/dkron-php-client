@@ -1,22 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Updevru\Dkron\Tests\Value;
 
-use Updevru\Dkron\Value\JobSearchValue;
 use PHPUnit\Framework\TestCase;
+use Updevru\Dkron\Value\JobSearchValue;
 
 class JobSearchValueTest extends TestCase
 {
     /**
-     * @covers JobSearchValue::getRequest
-     * @covers JobSearchValue::setMetadata
-     * @covers JobSearchValue::setFilterQuery
-     * @covers JobSearchValue::setOrder
-     * @covers JobSearchValue::setSort
-     * @covers JobSearchValue::setStart
-     * @covers JobSearchValue::setEnd
+     * @covers \JobSearchValue::getRequest
+     * @covers \JobSearchValue::setMetadata
+     * @covers \JobSearchValue::setFilterQuery
+     * @covers \JobSearchValue::setOrder
+     * @covers \JobSearchValue::setSort
+     * @covers \JobSearchValue::setStart
+     * @covers \JobSearchValue::setEnd
      */
-    public function testGetRequestSuccess() : void
+    public function testGetRequestSuccess(): void
     {
         $value = new JobSearchValue();
         $value->setMetadata(['tag' => 'test'])

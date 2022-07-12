@@ -9,3 +9,7 @@ composer.lock
 # Tests
 .phpunit.result.cache
 /.phpunit.cache
+
+# PHP CS Fixer
+php-cs-fixer-v3.phar
+.php-cs-fixer.cache

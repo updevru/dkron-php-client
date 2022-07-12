@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Updevru\Dkron\Tests;
 
-use Nyholm\Psr7\Response;
-use Updevru\Dkron\ApiClient;
-use PHPUnit\Framework\TestCase;
 use Http\Mock\Client;
+use Nyholm\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use Updevru\Dkron\Exception\ApiErrorException;
 
 class ApiClientTest extends TestCase
@@ -13,9 +14,9 @@ class ApiClientTest extends TestCase
     use HelpTrait;
 
     /**
-     * @covers ApiClient::get
+     * @covers \ApiClient::get
      */
-    public function testGetSuccess()
+    public function testGetSuccess(): void
     {
         $client = new Client();
         $apiClient = $this->createApiClient($client);
@@ -30,9 +31,9 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @covers ApiClient::get
+     * @covers \ApiClient::get
      */
-    public function testGetError()
+    public function testGetError(): void
     {
         $client = new Client();
         $client->addResponse(new Response(404));
@@ -44,9 +45,9 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @covers ApiClient::post
+     * @covers \ApiClient::post
      */
-    public function testPostSuccess()
+    public function testPostSuccess(): void
     {
         $client = new Client();
         $apiClient = $this->createApiClient($client);
@@ -61,9 +62,9 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @covers ApiClient::post
+     * @covers \ApiClient::post
      */
-    public function testPostWithBodySuccess()
+    public function testPostWithBodySuccess(): void
     {
         $client = new Client();
         $apiClient = $this->createApiClient($client);
@@ -79,9 +80,9 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @covers ApiClient::delete
+     * @covers \ApiClient::delete
      */
-    public function testDeleteSuccess()
+    public function testDeleteSuccess(): void
     {
         $client = new Client();
         $apiClient = $this->createApiClient($client);

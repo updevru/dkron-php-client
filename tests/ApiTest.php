@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Updevru\Dkron\Tests;
 
-use Updevru\Dkron\Api;
-use PHPUnit\Framework\TestCase;
 use Http\Mock\Client;
-use Updevru\Dkron\Dto\ExecutionDto;
+use PHPUnit\Framework\TestCase;
+use Updevru\Dkron\Api;
 use Updevru\Dkron\Dto\MemberDto;
 use Updevru\Dkron\Dto\StatusDto;
 use Updevru\Dkron\Serializer\JMSSerializer;
@@ -14,7 +15,7 @@ class ApiTest extends TestCase
 {
     use HelpTrait;
 
-    private function createApi(Client $client) : Api
+    private function createApi(Client $client): Api
     {
         return new Api(
             $this->createApiClient($client),
@@ -23,42 +24,42 @@ class ApiTest extends TestCase
     }
 
     /**
-     * @covers Api::getStatus
+     * @covers \Api::getStatus
      */
-    public function testGetStatusSuccess() : void
+    public function testGetStatusSuccess(): void
     {
         $body = <<<JSON
-{
-  "agent": {
-    "name": "node1",
-    "version": "3.2.0"
-  },
-  "serf": {
-    "coordinate_resets": "0",
-    "encrypted": "false",
-    "event_queue": "0",
-    "event_time": "1",
-    "failed": "0",
-    "health_score": "0",
-    "intent_queue": "0",
-    "left": "0",
-    "member_time": "1",
-    "members": "1",
-    "query_queue": "0",
-    "query_time": "1"
-  },
-  "tags": {
-    "dc": "dc1",
-    "expect": "1",
-    "port": "6868",
-    "region": "global",
-    "role": "dkron",
-    "rpc_addr": "172.17.0.3:6868",
-    "server": "true",
-    "version": "3.2.0"
-  }
-}
-JSON;
+            {
+              "agent": {
+                "name": "node1",
+                "version": "3.2.0"
+              },
+              "serf": {
+                "coordinate_resets": "0",
+                "encrypted": "false",
+                "event_queue": "0",
+                "event_time": "1",
+                "failed": "0",
+                "health_score": "0",
+                "intent_queue": "0",
+                "left": "0",
+                "member_time": "1",
+                "members": "1",
+                "query_queue": "0",
+                "query_time": "1"
+              },
+              "tags": {
+                "dc": "dc1",
+                "expect": "1",
+                "port": "6868",
+                "region": "global",
+                "role": "dkron",
+                "rpc_addr": "172.17.0.3:6868",
+                "server": "true",
+                "version": "3.2.0"
+              }
+            }
+            JSON;
         $client = $this->createHttpClient(200, $body);
         $result = $this->createApi($client)->getStatus();
 
@@ -69,34 +70,34 @@ JSON;
     }
 
     /**
-     * @covers Api::leave
+     * @covers \Api::leave
      */
-    public function testLeaveSuccess() : void
+    public function testLeaveSuccess(): void
     {
         $body = <<<JSON
-{
-  "Name": "node1",
-  "Addr": "172.17.0.3",
-  "Port": 8946,
-  "Tags": {
-    "dc": "dc1",
-    "expect": "1",
-    "port": "6868",
-    "region": "global",
-    "role": "dkron",
-    "rpc_addr": "172.17.0.3:6868",
-    "server": "true",
-    "version": "3.2.0"
-  },
-  "Status": 1,
-  "ProtocolMin": 1,
-  "ProtocolMax": 3,
-  "ProtocolCur": 4,
-  "DelegateMin": 5,
-  "DelegateMax": 6,
-  "DelegateCur": 7
-}
-JSON;
+            {
+              "Name": "node1",
+              "Addr": "172.17.0.3",
+              "Port": 8946,
+              "Tags": {
+                "dc": "dc1",
+                "expect": "1",
+                "port": "6868",
+                "region": "global",
+                "role": "dkron",
+                "rpc_addr": "172.17.0.3:6868",
+                "server": "true",
+                "version": "3.2.0"
+              },
+              "Status": 1,
+              "ProtocolMin": 1,
+              "ProtocolMax": 3,
+              "ProtocolCur": 4,
+              "DelegateMin": 5,
+              "DelegateMax": 6,
+              "DelegateCur": 7
+            }
+            JSON;
         $client = $this->createHttpClient(200, $body);
         $result = $this->createApi($client)->leave();
 
@@ -114,9 +115,9 @@ JSON;
     }
 
     /**
-     * @covers Api::isLeader
+     * @covers \Api::isLeader
      */
-    public function testGetIsLeaderSuccess() : void
+    public function testGetIsLeaderSuccess(): void
     {
         $client = $this->createHttpClient(200, null);
         $result = $this->createApi($client)->isLeader();
@@ -125,9 +126,9 @@ JSON;
     }
 
     /**
-     * @covers Api::isLeader
+     * @covers \Api::isLeader
      */
-    public function testGetIsNotLeaderSuccess() : void
+    public function testGetIsNotLeaderSuccess(): void
     {
         $client = $this->createHttpClient(404, null);
         $result = $this->createApi($client)->isLeader();

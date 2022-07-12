@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Updevru\Dkron\Tests\Resource;
 
 use Http\Mock\Client;
@@ -13,7 +15,7 @@ class ExecutionsResourceTest extends TestCase
 {
     use HelpTrait;
 
-    private function createApi(Client $client) : ExecutionsResource
+    private function createApi(Client $client): ExecutionsResource
     {
         return new ExecutionsResource(
             $this->createApiClient($client),
@@ -22,9 +24,9 @@ class ExecutionsResourceTest extends TestCase
     }
 
     /**
-     * @covers ExecutionsResource::get
+     * @covers \ExecutionsResource::get
      */
-    public function testBusySuccess() : void
+    public function testBusySuccess(): void
     {
         $body = '
 [
@@ -74,9 +76,9 @@ class ExecutionsResourceTest extends TestCase
     }
 
     /**
-     * @covers ExecutionsResource::getExecutionsByJob
+     * @covers \ExecutionsResource::getExecutionsByJob
      */
-    public function testGetExecutionsByJobSuccess()
+    public function testGetExecutionsByJobSuccess(): void
     {
         $body = '
 [
@@ -113,9 +115,9 @@ class ExecutionsResourceTest extends TestCase
     }
 
     /**
-     * @covers ExecutionsResource::getExecutionById
+     * @covers \ExecutionsResource::getExecutionById
      */
-    public function testGetExecutionById()
+    public function testGetExecutionById(): void
     {
         $body = '
 {

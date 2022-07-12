@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Updevru\Dkron;
 
 use Updevru\Dkron\Dto\MemberDto;
@@ -11,22 +13,12 @@ use Updevru\Dkron\Resource\MembersResource;
 
 class Api
 {
-    /** @var ApiClient  */
-    private $client;
+    private ApiClient $client;
+    private Serializer\SerializerInterface $serializer;
 
-    /**
-     * @var Serializer\SerializerInterface
-     */
-    private $serializer;
-
-    /** @var JobsResource */
-    public $jobs;
-
-    /** @var MembersResource */
-    public $members;
-
-    /** @var ExecutionsResource */
-    public $executions;
+    public JobsResource $jobs;
+    public MembersResource $members;
+    public ExecutionsResource $executions;
 
     public function __construct(ApiClient $client, Serializer\SerializerInterface $serializer)
     {
@@ -38,17 +30,17 @@ class Api
         $this->executions = new ExecutionsResource($client, $serializer);
     }
 
-    public function getStatus() : StatusDto
+    public function getStatus(): StatusDto
     {
         return $this->serializer->deserialize($this->client->get('/'), StatusDto::class);
     }
 
-    public function isLeader() : bool
+    public function isLeader(): bool
     {
         try {
             $this->client->get('/isleader');
         } catch (ApiErrorException $e) {
-            if ($e->getCode() === 404) {
+            if (404 === $e->getCode()) {
                 return false;
             }
 

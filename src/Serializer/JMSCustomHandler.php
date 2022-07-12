@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Updevru\Dkron\Serializer;
 
 use JMS\Serializer\Context;
-use JMS\Serializer\Handler\SubscribingHandlerInterface;
 use JMS\Serializer\GraphNavigatorInterface;
+use JMS\Serializer\Handler\SubscribingHandlerInterface;
 use JMS\Serializer\JsonDeserializationVisitor;
 
 class JMSCustomHandler implements SubscribingHandlerInterface
 {
-    public static function getSubscribingMethods()
+    public static function getSubscribingMethods(): array
     {
         return [
             [
@@ -18,18 +19,16 @@ class JMSCustomHandler implements SubscribingHandlerInterface
                 'format' => 'json',
                 'type' => 'CustomDateTime',
                 'method' => 'deserializeDateTimeFromJson',
-            ]
+            ],
         ];
     }
 
-    public function cutMilliSeconds(string $date) : string
+    public function cutMilliSeconds(string $date): string
     {
         if (preg_match('/\.([\d+]+)/m', $date)) {
             $date = preg_replace_callback(
                 '/\.([\d+]+)/m',
-                function ($matches) {
-                    return substr($matches[0], 0, 6);
-                },
+                fn ($matches) => substr($matches[0], 0, 6),
                 $date
             );
         }
@@ -37,7 +36,7 @@ class JMSCustomHandler implements SubscribingHandlerInterface
         return $date;
     }
 
-    public function deserializeDateTimeFromJson(JsonDeserializationVisitor $visitor, $dateAsString, array $type, Context $context)
+    public function deserializeDateTimeFromJson(JsonDeserializationVisitor $visitor, $dateAsString, array $type, Context $context): \DateTime
     {
         return new \DateTime($this->cutMilliSeconds($dateAsString));
     }
