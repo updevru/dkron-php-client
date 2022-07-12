@@ -1,0 +1,25 @@
+name: CI PHP Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ "7.4", "8.0", "8.1" ]
+    steps:
+        - uses: actions/checkout@v2
+        - uses: php-actions/composer@v6
+        - name: Run PHPUnit Tests
+          uses: php-actions/phpunit@v3
+          with:
+            bootstrap: vendor/autoload.php
+            configuration: phpunit.xml
+            php_version: ${{ matrix.version }}

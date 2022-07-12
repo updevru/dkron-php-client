@@ -24,14 +24,14 @@ You can find more info in the [documentation](https://dkron.io/api/).
 
 Install the library from the Packagist by executing this command:
 
-```
+```bash
 composer require updevru/dkron-php-client
 ```
 
 **Note:** API client uses php-http/curl-client and nyholm/psr7 as a PSR-18, PSR-17 and PSR-7 implementation. 
 You can replace those implementations during installation by installing this library with the implementation of your choice, like this:
 
-```
+```bash
 composer require php-http/curl-client nyholm/psr7 updevru/dkron-php-client
 ```
 
@@ -39,7 +39,7 @@ composer require php-http/curl-client nyholm/psr7 updevru/dkron-php-client
 
 Firstly, you should initialize the Client. 
 
-```
+```php
 use Http\Client\Curl\Client;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Updevru\Dkron\ApiClient;
@@ -57,7 +57,7 @@ $api = new \Updevru\Dkron\Api($client, new \Updevru\Dkron\Serializer\JMSSerializ
 
 Create new job:
 
-```
+```php
 $newJob = new \Updevru\Dkron\Dto\JobDto();
 $newJob->setName('test_job');
 $newJob->setSchedule('*/2 * * * * *');
@@ -70,23 +70,25 @@ $api->jobs->createOrUpdateJob($newJob);
 
 Run job manually:
 
-```
+```php
 $api->jobs->runJob('test_job');
 ```
 
 Show list executions:
 
-```
+```php
 $jobs = $api->jobs->getJobs();
 ```
 
 Disable job:
-```
+
+```php
 $api->jobs->toggleJob('test_job');
 ```
 
-Deleting job test_job":
-```
+Deleting job test_job:
+
+```php
 $api->jobs->deleteJob('test_job');
 ```
 
@@ -94,12 +96,12 @@ $api->jobs->deleteJob('test_job');
 
 Run unit tests:
 
-```
+```bash
 composer tests
 ```
 
 Demo working library:
 
-```
+```bash
 php bin/test.php http://localhost:8080
 ```
