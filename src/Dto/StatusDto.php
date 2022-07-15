@@ -11,19 +11,19 @@ class StatusDto
     /**
      * @Type("array<string,string>")
      */
-    private array $agent;
+    private ?array $agent = null;
 
     /**
      * @Type("array<string,string>")
      */
-    private array $serf;
+    private ?array $serf = null;
 
     /**
      * @Type("array<string,string>")
      */
-    private array $tags;
+    private ?array $tags = null;
 
-    public function getAgent(): array
+    public function getAgent(): ?array
     {
         return $this->agent;
     }
@@ -33,7 +33,7 @@ class StatusDto
         $this->agent = $agent;
     }
 
-    public function getSerf(): array
+    public function getSerf(): ?array
     {
         return $this->serf;
     }
@@ -43,7 +43,7 @@ class StatusDto
         $this->serf = $serf;
     }
 
-    public function getTags(): array
+    public function getTags(): ?array
     {
         return $this->tags;
     }

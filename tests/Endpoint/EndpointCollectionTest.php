@@ -21,7 +21,7 @@ class EndpointCollectionTest extends TestCase
 
     /**
      * @dataProvider getConstructorCountProvider
-     * @covers \EndpointCollection::__construct
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::__construct
      */
     public function testConstructorCountSuccess(array $urls): void
     {
@@ -52,7 +52,8 @@ class EndpointCollectionTest extends TestCase
     }
 
     /**
-     * @covers \EndpointCollection::__construct
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::__construct
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::sanitize
      * @dataProvider getConstructorValidProvider
      */
     public function testConstructorValidSuccess(array $urls, array $validUrls): void
@@ -66,7 +67,8 @@ class EndpointCollectionTest extends TestCase
     }
 
     /**
-     * @covers \EndpointCollection::__construct
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::__construct
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::sanitize
      */
     public function testConstructorError(): void
     {
@@ -75,7 +77,18 @@ class EndpointCollectionTest extends TestCase
     }
 
     /**
-     * @covers \EndpointCollection::getAvailableEndpoint
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::__construct
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::sanitize
+     */
+    public function testConstructorCountError(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new EndpointCollection([]);
+    }
+
+    /**
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::getAvailableEndpoint
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::getEndpoints
      */
     public function testGetAvailableEndpointSuccess(): void
     {
@@ -107,7 +120,7 @@ class EndpointCollectionTest extends TestCase
     }
 
     /**
-     * @covers \EndpointCollection::makeUnavailable
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::makeUnavailable
      */
     public function testMakeUnavailable(): void
     {

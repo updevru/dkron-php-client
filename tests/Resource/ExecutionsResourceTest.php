@@ -24,7 +24,7 @@ class ExecutionsResourceTest extends TestCase
     }
 
     /**
-     * @covers \ExecutionsResource::get
+     * @covers \Updevru\Dkron\Resource\ExecutionsResource::getExecutions
      */
     public function testBusySuccess(): void
     {
@@ -76,7 +76,7 @@ class ExecutionsResourceTest extends TestCase
     }
 
     /**
-     * @covers \ExecutionsResource::getExecutionsByJob
+     * @covers \Updevru\Dkron\Resource\ExecutionsResource::getExecutionsByJob
      */
     public function testGetExecutionsByJobSuccess(): void
     {
@@ -115,7 +115,7 @@ class ExecutionsResourceTest extends TestCase
     }
 
     /**
-     * @covers \ExecutionsResource::getExecutionById
+     * @covers \Updevru\Dkron\Resource\ExecutionsResource::getExecutionById
      */
     public function testGetExecutionById(): void
     {

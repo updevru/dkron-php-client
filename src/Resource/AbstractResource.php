@@ -7,6 +7,9 @@ namespace Updevru\Dkron\Resource;
 use Updevru\Dkron\ApiClient;
 use Updevru\Dkron\Serializer\SerializerInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class AbstractResource
 {
     protected ApiClient $client;

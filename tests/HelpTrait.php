@@ -12,10 +12,12 @@ use Updevru\Dkron\Endpoint\EndpointCollection;
 
 trait HelpTrait
 {
-    protected function createApiClient(Client $client): ApiClient
+    protected function createApiClient(Client $client, array $endpoints = []): ApiClient
     {
+        $endpoints = (\count($endpoints) > 0) ? $endpoints : ['http://emptyhost'];
+
         return new ApiClient(
-            new EndpointCollection(['http://emptyhost']),
+            new EndpointCollection($endpoints),
             $client,
             new Psr17Factory(),
             new Psr17Factory()

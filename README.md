@@ -1,5 +1,9 @@
 # Dkron PHP Client
 
+[![Build Status](https://github.com/retailcrm/api-client-php/workflows/CI/badge.svg)](https://github.com/updevru/dkron-php-client/actions)
+[![Latest stable](https://img.shields.io/packagist/v/updevru/dkron-php-client.svg)](https://packagist.org/packages/updevru/dkron-php-client)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/updevru/dkron-php-client.svg?logo=php&logoColor=white)](https://packagist.org/packages/updevru/dkron-php-client)
+
 This is the PHP [Dkron](https://dkron.io) API client. This library allows using of the actual API version.
 You can find more info in the [documentation](https://dkron.io/api/).
 

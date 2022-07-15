@@ -19,7 +19,7 @@ class JMSCustomHandlerTest extends TestCase
     }
 
     /**
-     * @covers \JMSCustomHandler::cutMilliSeconds
+     * @covers \Updevru\Dkron\Serializer\JMSCustomHandler::cutMilliSeconds
      * @dataProvider cutMilliSecondsProvider
      */
     public function testCutMilliSecondsSuccess(string $source, string $result): void

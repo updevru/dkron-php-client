@@ -24,7 +24,7 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers \JobsResource::getJobs
+     * @covers \Updevru\Dkron\Resource\JobsResource::getJobs
      */
     public function testGetJobsSuccess(): void
     {
@@ -183,7 +183,49 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers \JobsResource::getJobByName
+     * @covers \Updevru\Dkron\Resource\JobsResource::createOrUpdateJob
+     * @covers \Updevru\Dkron\Serializer\JMSSerializer::serialize
+     * @covers \Updevru\Dkron\Serializer\JMSSerializer::deserialize
+     */
+    public function testCreateOrUpdateJobSuccess(): void
+    {
+        $newJob = new JobDto();
+        $newJob->setName('test');
+        $newJob->setSchedule('0 */5 * * * *');
+        $newJob->setConcurrency(JobDto::CONCURRENCY_ALLOW);
+        $newJob->setExecutor('shell');
+        $newJob->setExecutorConfig(['command' => 'echo Hi']);
+
+        $client = $this->createHttpClient(200, $this->createSingleJobResponse());
+        $result = $this->createApi($client)->createOrUpdateJob($newJob);
+
+        $this->assertInstanceOf(JobDto::class, $result);
+        $this->assertEquals($newJob->getName(), $result->getName());
+        $this->assertEquals($newJob->getSchedule(), $result->getSchedule());
+        $this->assertEquals($newJob->getConcurrency(), $result->getConcurrency());
+        $this->assertEquals($newJob->getExecutor(), $result->getExecutor());
+        $this->assertEquals($newJob->getExecutorConfig(), $result->getExecutorConfig());
+    }
+
+    /**
+     * @covers \Updevru\Dkron\Resource\JobsResource::createOrUpdateJob
+     */
+    public function testCreateOrUpdateJobRunOnCreateSuccess(): void
+    {
+        $newJob = new JobDto();
+        $newJob->setName('test');
+        $newJob->setSchedule('0 */5 * * * *');
+        $newJob->setExecutorConfig(['command' => 'echo Hi']);
+
+        $client = $this->createHttpClient(200, $this->createSingleJobResponse());
+        $result = $this->createApi($client)->createOrUpdateJob($newJob, true);
+
+        $this->assertInstanceOf(JobDto::class, $result);
+        $this->assertStringContainsString('runoncreate', $client->getLastRequest()->getUri()->getQuery());
+    }
+
+    /**
+     * @covers \Updevru\Dkron\Resource\JobsResource::getJobByName
      */
     public function testGetJobByNameSuccess(): void
     {
@@ -195,7 +237,7 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers \JobsResource::runJob
+     * @covers \Updevru\Dkron\Resource\JobsResource::runJob
      */
     public function testRunJobSuccess(): void
     {
@@ -207,7 +249,7 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers \JobsResource::deleteJob
+     * @covers \Updevru\Dkron\Resource\JobsResource::deleteJob
      */
     public function testDeleteJobSuccess(): void
     {
@@ -219,7 +261,7 @@ class JobsResourceTest extends TestCase
     }
 
     /**
-     * @covers \JobsResource::toggleJob
+     * @covers \Updevru\Dkron\Resource\JobsResource::toggleJob
      */
     public function testToggleJobSuccess(): void
     {
@@ -228,5 +270,21 @@ class JobsResourceTest extends TestCase
 
         $this->assertInstanceOf(JobDto::class, $result);
         $this->assertStringContainsString('test_job', $client->getLastRequest()->getUri()->getPath());
+    }
+
+    /**
+     * @covers \Updevru\Dkron\Resource\JobsResource::restoreJobFromJson
+     */
+    public function testRestoreJobFromJsonSuccess(): void
+    {
+        $client = $this->createHttpClient(200, $this->createSingleJobResponse());
+        $result = $this->createApi($client)->restoreJobFromJson($this->createSingleJobResponse());
+
+        $this->assertInstanceOf(JobDto::class, $result);
+        $this->assertEquals('test', $result->getName());
+        $this->assertEquals('0 */5 * * * *', $result->getSchedule());
+        $this->assertEquals('allow', $result->getConcurrency());
+        $this->assertEquals('shell', $result->getExecutor());
+        $this->assertEquals(['command' => 'echo Hi'], $result->getExecutorConfig());
     }
 }

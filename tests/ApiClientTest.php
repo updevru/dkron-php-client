@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Updevru\Dkron\Tests;
 
+use Http\Client\Exception\NetworkException;
 use Http\Mock\Client;
+use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Updevru\Dkron\Exception\ApiErrorException;
@@ -14,7 +16,10 @@ class ApiClientTest extends TestCase
     use HelpTrait;
 
     /**
-     * @covers \ApiClient::get
+     * @covers \Updevru\Dkron\ApiClient::get
+     * @covers \Updevru\Dkron\ApiClient::__construct
+     * @covers \Updevru\Dkron\ApiClient::sendRequest
+     * @covers \Updevru\Dkron\ApiClient::makeUrl
      */
     public function testGetSuccess(): void
     {
@@ -31,7 +36,28 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @covers \ApiClient::get
+     * @covers \Updevru\Dkron\ApiClient::get
+     * @covers \Updevru\Dkron\ApiClient::__construct
+     * @covers \Updevru\Dkron\ApiClient::sendRequest
+     * @covers \Updevru\Dkron\ApiClient::makeUrl
+     */
+    public function testGetFirstFailSuccess(): void
+    {
+        $client = new Client();
+        $client->addException(new NetworkException('', new Request('GET', 'http://emptyhost/test')));
+        $client->addResponse(new Response(200));
+        $apiClient = $this->createApiClient($client, ['http://emptyhost', 'http://emptyhost2']);
+
+        $apiClient->get('/test', ['q' => 'test', ['tag' => 1, 'index' => 'job']]);
+
+        $this->assertCount(2, $client->getRequests());
+        $this->assertEquals('emptyhost', $client->getRequests()[0]->getUri()->getHost());
+        $this->assertEquals('emptyhost2', $client->getRequests()[1]->getUri()->getHost());
+    }
+
+    /**
+     * @covers \Updevru\Dkron\ApiClient::get
+     * @covers \Updevru\Dkron\ApiClient::sendRequest
      */
     public function testGetError(): void
     {
@@ -45,7 +71,7 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @covers \ApiClient::post
+     * @covers \Updevru\Dkron\ApiClient::post
      */
     public function testPostSuccess(): void
     {
@@ -62,7 +88,8 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @covers \ApiClient::post
+     * @covers \Updevru\Dkron\ApiClient::post
+     * @covers \Updevru\Dkron\ApiClient::sendRequest
      */
     public function testPostWithBodySuccess(): void
     {
@@ -80,7 +107,7 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @covers \ApiClient::delete
+     * @covers \Updevru\Dkron\ApiClient::delete
      */
     public function testDeleteSuccess(): void
     {

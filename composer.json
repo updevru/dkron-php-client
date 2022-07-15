@@ -18,7 +18,8 @@
         "php": ">=7.4.0||^8.0",
         "ext-json": "*",
         "psr/http-client-implementation": "^1.0",
-        "jms/serializer": "^3.17"
+        "jms/serializer": "^3.17",
+        "ext-mbstring": "*"
     },
     "require-dev": {
         "nyholm/psr7": "^1.5",

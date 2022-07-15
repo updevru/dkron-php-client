@@ -49,6 +49,8 @@ class JobSearchValue
      */
     public function setOrder(string $order): self
     {
+        $order = mb_strtoupper($order);
+
         if (!\in_array($order, $this->allowOrder, true)) {
             throw new \InvalidArgumentException(sprintf('Invalid order must %s given %s', implode(',', $this->allowOrder), $order));
         }

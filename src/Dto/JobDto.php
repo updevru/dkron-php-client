@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Updevru\Dkron\Dto;
 
 use JMS\Serializer\Annotation\SerializedName;
-use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\SkipWhenEmpty;
+use JMS\Serializer\Annotation\Type;
 
 class JobDto
 {
@@ -365,7 +365,7 @@ class JobDto
         $this->metadata = $metadata;
     }
 
-    public function getTimezone(): string
+    public function getTimezone(): ?string
     {
         return $this->timezone;
     }
@@ -375,7 +375,7 @@ class JobDto
         $this->timezone = $timezone;
     }
 
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
     }

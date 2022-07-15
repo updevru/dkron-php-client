@@ -11,6 +11,9 @@ use JMS\Serializer\JsonDeserializationVisitor;
 
 class JMSCustomHandler implements SubscribingHandlerInterface
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public static function getSubscribingMethods(): array
     {
         return [
@@ -36,6 +39,9 @@ class JMSCustomHandler implements SubscribingHandlerInterface
         return $date;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function deserializeDateTimeFromJson(JsonDeserializationVisitor $visitor, $dateAsString, array $type, Context $context): \DateTime
     {
         return new \DateTime($this->cutMilliSeconds($dateAsString));
