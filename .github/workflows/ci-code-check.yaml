@@ -1,0 +1,26 @@
+name: CI PHP code checks
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  code-check:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - uses: shivammathur/setup-php@v2
+          with:
+            php-version: "8.1"
+            coverage: xdebug
+            tools: php-cs-fixer
+        - name: Composer install
+          run: "composer install"
+        - name: Run PHPUnit Tests with coverage
+          run: "php vendor/bin/phpunit --coverage-text"
+        - name: Run PHP CS Fixer
+          run: "php-cs-fixer fix -v --dry-run --stop-on-violation --using-cache=no"
