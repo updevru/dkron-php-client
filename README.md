@@ -50,7 +50,15 @@ use Updevru\Dkron\ApiClient;
 use Updevru\Dkron\Endpoint\EndpointCollection;
 
 $client = new Updevru\Dkron\ApiClient(
-    new Updevru\Dkron\Endpoint\EndpointCollection(['http://localhost']),
+    new Updevru\Dkron\Endpoint\EndpointCollection(
+        [
+            [
+                'url' => 'http://localhost',
+                'login' => null,
+                'password' => null,
+            ]
+        ]
+    ),
     new Http\Client\Curl\Client(),
     new Nyholm\Psr7\Factory\Psr17Factory(),
     new Nyholm\Psr7\Factory\Psr17Factory()
@@ -58,6 +66,8 @@ $client = new Updevru\Dkron\ApiClient(
 
 $api = new \Updevru\Dkron\Api($client, new \Updevru\Dkron\Serializer\JMSSerializer());
 ```
+
+If HTTP basic authorization is enabled, enter login and password.
 
 Create new job:
 

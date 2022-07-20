@@ -40,4 +40,48 @@ class EndpointTest extends TestCase
         $endpoint = new Endpoint('http://localhost');
         $this->assertEquals('http://localhost', $endpoint->getUrl());
     }
+
+    /**
+     * @covers \Updevru\Dkron\Endpoint\Endpoint::getLogin
+     * @covers \Updevru\Dkron\Endpoint\Endpoint::__construct
+     */
+    public function testGetEmptyLogin(): void
+    {
+        $endpoint = new Endpoint('http://localhost');
+        $this->assertEquals('http://localhost', $endpoint->getUrl());
+        $this->assertEmpty($endpoint->getLogin());
+    }
+
+    /**
+     * @covers \Updevru\Dkron\Endpoint\Endpoint::getLogin
+     * @covers \Updevru\Dkron\Endpoint\Endpoint::__construct
+     */
+    public function testGetLogin(): void
+    {
+        $endpoint = new Endpoint('http://localhost', 'login');
+        $this->assertEquals('http://localhost', $endpoint->getUrl());
+        $this->assertEquals('login', $endpoint->getLogin());
+    }
+
+    /**
+     * @covers \Updevru\Dkron\Endpoint\Endpoint::getPassword
+     * @covers \Updevru\Dkron\Endpoint\Endpoint::__construct
+     */
+    public function testGetEmptyPassword(): void
+    {
+        $endpoint = new Endpoint('http://localhost');
+        $this->assertEquals('http://localhost', $endpoint->getUrl());
+        $this->assertEmpty($endpoint->getPassword());
+    }
+
+    /**
+     * @covers \Updevru\Dkron\Endpoint\Endpoint::getPassword
+     * @covers \Updevru\Dkron\Endpoint\Endpoint::__construct
+     */
+    public function testGetPassword(): void
+    {
+        $endpoint = new Endpoint('http://localhost', null, 'password');
+        $this->assertEquals('http://localhost', $endpoint->getUrl());
+        $this->assertEquals('password', $endpoint->getPassword());
+    }
 }

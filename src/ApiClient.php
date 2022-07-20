@@ -7,6 +7,7 @@ namespace Updevru\Dkron;
 use Http\Client\Exception\NetworkException;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Updevru\Dkron\Endpoint\Endpoint;
 use Updevru\Dkron\Endpoint\EndpointInterface;
@@ -40,8 +41,11 @@ class ApiClient
                 $request = $this->requestFactory->createRequest($method, $this->makeUrl($endpoint, $uri, $query));
 
                 if (!empty($body)) {
-                    $request = $request->withBody($this->streamFactory->createStream($body))
-                        ->withHeader('Content-Type', 'application/json; charset=utf-8');
+                    $request = $this->attachBody($request, $body);
+                }
+
+                if ($endpoint->getUrl() && $endpoint->getPassword()) {
+                    $request = $this->authenticate($request, $endpoint);
                 }
 
                 $response = $this->client->sendRequest($request);
@@ -83,5 +87,18 @@ class ApiClient
         }
 
         return $url;
+    }
+
+    private function attachBody(RequestInterface $request, string $body): RequestInterface
+    {
+        return $request->withBody($this->streamFactory->createStream($body))
+            ->withHeader('Content-Type', 'application/json; charset=utf-8');
+    }
+
+    private function authenticate(RequestInterface $request, Endpoint $endpoint): RequestInterface
+    {
+        $header = sprintf('Basic %s', base64_encode(sprintf('%s:%s', $endpoint->getUrl(), $endpoint->getPassword())));
+
+        return $request->withHeader('Authorization', $header);
     }
 }

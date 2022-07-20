@@ -10,15 +10,22 @@ function logger(string $mask, ...$params): void
 }
 
 if (count($argv) > 1) {
-    $hosts = array_filter(array_slice($argv, 1));
+    $params = array_filter(array_slice($argv, 1));
 } else {
     logger('Run with real Dkron hosts');
     logger('Example: %s http://localhost:8080', $argv[0]);
+    logger('Example with authenticate: %s http://localhost:8080 user password', $argv[0]);
     exit(0);
 }
 
 $client = new Updevru\Dkron\ApiClient(
-    new Updevru\Dkron\Endpoint\EndpointCollection($hosts),
+    new Updevru\Dkron\Endpoint\EndpointCollection([
+        [
+            'url' => $params[0],
+            'login' => $params[1] ?? null,
+            'password' => $params[2] ?? null,
+        ],
+    ]),
     new Http\Client\Curl\Client(),
     new Nyholm\Psr7\Factory\Psr17Factory(),
     new Nyholm\Psr7\Factory\Psr17Factory()
@@ -27,7 +34,7 @@ $client = new Updevru\Dkron\ApiClient(
 $api = new \Updevru\Dkron\Api($client, new \Updevru\Dkron\Serializer\JMSSerializer());
 
 $status = $api->getStatus();
-logger('Dkron on host %s connected!', implode(',', $hosts));
+logger('Dkron on host %s connected!', $params[0]);
 logger('Agent name:%s version:%s', $status->getAgent()['name'], $status->getAgent()['version']);
 
 $newJob = new \Updevru\Dkron\Dto\JobDto();

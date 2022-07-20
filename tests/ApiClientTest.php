@@ -46,7 +46,7 @@ class ApiClientTest extends TestCase
         $client = new Client();
         $client->addException(new NetworkException('', new Request('GET', 'http://emptyhost/test')));
         $client->addResponse(new Response(200));
-        $apiClient = $this->createApiClient($client, ['http://emptyhost', 'http://emptyhost2']);
+        $apiClient = $this->createApiClient($client, [['url' => 'http://emptyhost'], ['url' => 'http://emptyhost2']]);
 
         $apiClient->get('/test', ['q' => 'test', ['tag' => 1, 'index' => 'job']]);
 
@@ -71,6 +71,21 @@ class ApiClientTest extends TestCase
     }
 
     /**
+     * @covers \Updevru\Dkron\ApiClient::authenticate
+     * @covers \Updevru\Dkron\ApiClient::sendRequest
+     */
+    public function testGetAuthenticateSuccess(): void
+    {
+        $client = new Client();
+        $apiClient = $this->createApiClient($client, [['url' => 'http://localhost', 'login' => 'test', 'password' => 'test']]);
+        $apiClient->get('/test');
+
+        $request = $client->getLastRequest();
+        $this->assertCount(1, $request->getHeader('Authorization'));
+        $this->assertEquals('Basic aHR0cDovL2xvY2FsaG9zdDp0ZXN0', $request->getHeader('Authorization')[0]);
+    }
+
+    /**
      * @covers \Updevru\Dkron\ApiClient::post
      */
     public function testPostSuccess(): void
@@ -90,6 +105,7 @@ class ApiClientTest extends TestCase
     /**
      * @covers \Updevru\Dkron\ApiClient::post
      * @covers \Updevru\Dkron\ApiClient::sendRequest
+     * @covers \Updevru\Dkron\ApiClient::attachBody
      */
     public function testPostWithBodySuccess(): void
     {

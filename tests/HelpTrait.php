@@ -14,7 +14,7 @@ trait HelpTrait
 {
     protected function createApiClient(Client $client, array $endpoints = []): ApiClient
     {
-        $endpoints = (\count($endpoints) > 0) ? $endpoints : ['http://emptyhost'];
+        $endpoints = (\count($endpoints) > 0) ? $endpoints : [['url' => 'http://emptyhost']];
 
         return new ApiClient(
             new EndpointCollection($endpoints),

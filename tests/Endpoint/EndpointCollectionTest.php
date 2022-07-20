@@ -13,9 +13,9 @@ class EndpointCollectionTest extends TestCase
     public function getConstructorCountProvider(): array
     {
         return [
-            [['http://localhost']],
-            [['http://localhost', 'http://anotherhost']],
-            [['http://localhost', 'http://anotherhost', 'https://anotherhost:322']],
+            [[['url' => 'http://localhost']]],
+            [[['url' => 'http://localhost'], ['url' => 'http://anotherhost']]],
+            [[['url' => 'http://localhost'], ['url' => 'http://anotherhost'], ['url' => 'https://anotherhost:322']]],
         ];
     }
 
@@ -33,19 +33,19 @@ class EndpointCollectionTest extends TestCase
     {
         return [
             [
+                [['url' => 'http://localhost']],
                 ['http://localhost'],
-                ['http://localhost'],
             ],
             [
-                ['https://localhost:4000'],
-                ['https://localhost:4000'],
-            ],
-            [
-                ['https://LOCALHOST:4000'],
+                [['url' => 'https://localhost:4000']],
                 ['https://localhost:4000'],
             ],
             [
-                ['https://localhost:4000', 'https://LOCALHOST:4000', 'https://LOCALHOST2:4000', 'https://localhost1:4001'],
+                [['url' => 'https://LOCALHOST:4000']],
+                ['https://localhost:4000'],
+            ],
+            [
+                [['url' => 'https://localhost:4000'], ['url' => 'https://LOCALHOST2:4000'], ['url' => 'https://localhost1:4001']],
                 ['https://localhost:4000', 'https://localhost2:4000', 'https://localhost1:4001'],
             ],
         ];
@@ -70,10 +70,23 @@ class EndpointCollectionTest extends TestCase
      * @covers \Updevru\Dkron\Endpoint\EndpointCollection::__construct
      * @covers \Updevru\Dkron\Endpoint\EndpointCollection::sanitize
      */
-    public function testConstructorError(): void
+    public function testConstructorInvalidUrlError(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new EndpointCollection(['broken_url']);
+        new EndpointCollection([['url' => 'broken_url']]);
+    }
+
+    /**
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::__construct
+     * @covers \Updevru\Dkron\Endpoint\EndpointCollection::sanitize
+     */
+    public function testConstructorEmptyUrlError(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new EndpointCollection([['url' => null]]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        new EndpointCollection([['url2' => null]]);
     }
 
     /**
@@ -92,27 +105,23 @@ class EndpointCollectionTest extends TestCase
      */
     public function testGetAvailableEndpointSuccess(): void
     {
-        $urls = ['https://localhost:4001', 'https://localhost:4002', 'https://localhost:4003'];
+        $urls = [['url' => 'https://localhost:4001'], ['url' => 'https://localhost:4002'], ['url' => 'https://localhost:4003']];
         $collection = new EndpointCollection($urls);
         $endpoint1 = $collection->getAvailableEndpoint();
         $this->assertInstanceOf(Endpoint::class, $endpoint1);
-        $this->assertTrue(\in_array($endpoint1->getUrl(), $urls, true));
+        $this->assertEquals($endpoint1->getUrl(), $urls[0]['url']);
         $endpoint1->setAvailable(false);
-        unset($urls[array_search($endpoint1->getUrl(), $urls, true)]);
 
         $endpoint2 = $collection->getAvailableEndpoint();
         $this->assertInstanceOf(Endpoint::class, $endpoint2);
-        $this->assertTrue(\in_array($endpoint2->getUrl(), $urls, true));
+        $this->assertEquals($endpoint2->getUrl(), $urls[1]['url']);
         $endpoint2->setAvailable(false);
-        unset($urls[array_search($endpoint2->getUrl(), $urls, true)]);
 
         $endpoint3 = $collection->getAvailableEndpoint();
         $this->assertInstanceOf(Endpoint::class, $endpoint3);
-        $this->assertTrue(\in_array($endpoint3->getUrl(), $urls, true));
+        $this->assertEquals($endpoint3->getUrl(), $urls[2]['url']);
         $endpoint3->setAvailable(false);
-        unset($urls[array_search($endpoint3->getUrl(), $urls, true)]);
 
-        $this->assertEmpty($urls);
         $this->assertNotEmpty($collection->getEndpoints());
 
         $this->expectException(\LogicException::class);
@@ -124,7 +133,7 @@ class EndpointCollectionTest extends TestCase
      */
     public function testMakeUnavailable(): void
     {
-        $collection = new EndpointCollection(['https://localhost:4001']);
+        $collection = new EndpointCollection([['url' => 'https://localhost:4001']]);
         $endpoint = $collection->getAvailableEndpoint();
         $this->assertInstanceOf(Endpoint::class, $endpoint);
 

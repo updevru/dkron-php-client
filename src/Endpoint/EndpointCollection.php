@@ -15,12 +15,16 @@ class EndpointCollection implements EndpointInterface
             throw new \InvalidArgumentException('Parameter endpoints cannot be empty');
         }
 
-        // remove duplicates
-        $endpoints = array_map(fn ($endpoint) => $this->sanitize($endpoint), $endpoints);
-        $endpoints = array_unique($endpoints);
+        foreach ($endpoints as $i => $endpoint) {
+            if (empty($endpoint['url'])) {
+                throw new \InvalidArgumentException(sprintf('On set #%s parameter url cannot be empty', $i));
+            }
 
-        foreach ($endpoints as $endpoint) {
-            $this->endpoints[] = new Endpoint($this->sanitize($endpoint));
+            $this->endpoints[] = new Endpoint(
+                $this->sanitize($endpoint['url']),
+                $endpoint['login'] ?? null,
+                $endpoint['password'] ?? null,
+            );
         }
     }
 
@@ -28,11 +32,6 @@ class EndpointCollection implements EndpointInterface
     {
         if (false === filter_var($endpoint, \FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException('Endpoint '.$endpoint.' has to be a valid URL');
-        }
-        $url = parse_url($endpoint);
-        $endpoint = $url['scheme'].'://'.$url['host'];
-        if (isset($url['port'])) {
-            $endpoint .= ':'.$url['port'];
         }
 
         return strtolower($endpoint);
