@@ -77,12 +77,12 @@ class ApiClientTest extends TestCase
     public function testGetAuthenticateSuccess(): void
     {
         $client = new Client();
-        $apiClient = $this->createApiClient($client, [['url' => 'http://localhost', 'login' => 'test', 'password' => 'test']]);
+        $apiClient = $this->createApiClient($client, [['url' => 'http://localhost', 'login' => 'test_login', 'password' => 'test_password']]);
         $apiClient->get('/test');
 
         $request = $client->getLastRequest();
         $this->assertCount(1, $request->getHeader('Authorization'));
-        $this->assertEquals('Basic aHR0cDovL2xvY2FsaG9zdDp0ZXN0', $request->getHeader('Authorization')[0]);
+        $this->assertEquals('Basic dGVzdF9sb2dpbjp0ZXN0X3Bhc3N3b3Jk', $request->getHeader('Authorization')[0]);
     }
 
     /**

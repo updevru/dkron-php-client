@@ -97,7 +97,7 @@ class ApiClient
 
     private function authenticate(RequestInterface $request, Endpoint $endpoint): RequestInterface
     {
-        $header = sprintf('Basic %s', base64_encode(sprintf('%s:%s', $endpoint->getUrl(), $endpoint->getPassword())));
+        $header = sprintf('Basic %s', base64_encode(sprintf('%s:%s', $endpoint->getLogin(), $endpoint->getPassword())));
 
         return $request->withHeader('Authorization', $header);
     }
