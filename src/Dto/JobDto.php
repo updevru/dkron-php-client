@@ -101,7 +101,7 @@ class JobDto
      * @Type("array")
      * @SerializedName("processors")
      */
-    private ?array $processors = null;
+    private ?array $processors = [];
 
     /**
      * @Type("int")
