@@ -19,7 +19,8 @@
         "ext-json": "*",
         "psr/http-client-implementation": "^1.0",
         "jms/serializer": "^3.17",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "doctrine/annotations": "^2.0"
     },
     "require-dev": {
         "nyholm/psr7": "^1.5",
