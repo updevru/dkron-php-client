@@ -14,7 +14,7 @@ class JobsResource extends AbstractResource
      *
      * @return JobDto[]
      */
-    public function getJobs(JobSearchValue $searchValue = null): array
+    public function getJobs(?JobSearchValue $searchValue = null): array
     {
         return $this->serializer->deserialize(
             $this->client->get('/jobs', $searchValue ? $searchValue->getRequest() : []),
@@ -28,7 +28,7 @@ class JobsResource extends AbstractResource
      *
      * @param bool|null $runOnCreate if present, regardless of any value, causes the job to be run immediately after being successfully created or updated
      */
-    public function createOrUpdateJob(JobDto $job, bool $runOnCreate = null): JobDto
+    public function createOrUpdateJob(JobDto $job, ?bool $runOnCreate = null): JobDto
     {
         return $this->serializer->deserialize(
             $this->client->post(

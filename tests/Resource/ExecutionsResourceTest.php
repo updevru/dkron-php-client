@@ -28,6 +28,8 @@ class ExecutionsResourceTest extends TestCase
      */
     public function testBusySuccess(): void
     {
+        parent::__construct();
+
         $body = '
 [
   {
